@@ -6,6 +6,77 @@ let previousValue = '';
 let operator = null;
 let shouldReset = false;
 
+const catBackground = document.querySelector('.cat-background');
+const catCount = 6;
+const cats = [];
+
+function createCat() {
+    const cat = document.createElement('div');
+    cat.className = 'cat';
+    const size = 44 + Math.random() * 18;
+    cat.style.width = `${size}px`;
+    cat.style.height = `${size}px`;
+    cat.x = Math.random() * (window.innerWidth - size);
+    cat.y = Math.random() * (window.innerHeight - size);
+    cat.vx = (Math.random() * 0.5 + 0.1) * (Math.random() > 0.5 ? 1 : -1);
+    cat.vy = (Math.random() * 0.5 + 0.1) * (Math.random() > 0.5 ? 1 : -1);
+    cat.style.left = `${cat.x}px`;
+    cat.style.top = `${cat.y}px`;
+    catBackground.appendChild(cat);
+    cats.push(cat);
+}
+
+function updateCats() {
+    const bounds = catBackground.getBoundingClientRect();
+    cats.forEach(cat => {
+        const size = cat.offsetWidth;
+        cat.x += cat.vx;
+        cat.y += cat.vy;
+
+        if (cat.x <= bounds.left) {
+            cat.x = bounds.left;
+            cat.vx *= -1;
+        }
+        if (cat.y <= bounds.top) {
+            cat.y = bounds.top;
+            cat.vy *= -1;
+        }
+        if (cat.x + size >= bounds.right) {
+            cat.x = bounds.right - size;
+            cat.vx *= -1;
+        }
+        if (cat.y + size >= bounds.bottom) {
+            cat.y = bounds.bottom - size;
+            cat.vy *= -1;
+        }
+
+        cat.style.left = `${cat.x}px`;
+        cat.style.top = `${cat.y}px`;
+    });
+}
+
+function initCats() {
+    if (!catBackground) return;
+    for (let i = 0; i < catCount; i += 1) {
+        createCat();
+    }
+    function animate() {
+        updateCats();
+        requestAnimationFrame(animate);
+    }
+    animate();
+}
+
+window.addEventListener('resize', () => {
+    cats.forEach(cat => {
+        const bounds = catBackground.getBoundingClientRect();
+        cat.x = Math.min(cat.x, bounds.width - cat.offsetWidth);
+        cat.y = Math.min(cat.y, bounds.height - cat.offsetHeight);
+    });
+});
+
+initCats();
+
 function playMiau() {
     if (!miauSound) return;
     miauSound.currentTime = 0;
