@@ -128,28 +128,38 @@ body::after {
     background: linear-gradient(180deg, #ffe4fb 0%, #ffb6ef 100%);
     border-radius: 36px;
     box-shadow: 0 26px 45px rgba(121, 44, 98, 0.25), inset 0 -3px 0 rgba(255, 255, 255, 0.4);
-    width: min(360px, 90vw);
-    max-width: 400px;
-    padding: 20px;
+    width: min(380px, 92vw);
+    max-width: 420px;
+    padding: 22px;
     transform: perspective(800px) rotateX(5deg);
     position: relative;
     z-index: 1;
-     transition: transform 0.3s ease;
- }
- .calculator.bounce {
-     animation: calculatorBounce 0.5s ease;
- }
+    transition: transform 0.3s ease;
+}
+.calculator.bounce {
+    animation: calculatorBounce 0.5s ease;
+}
 
- @keyframes calculatorBounce {
-     0% { transform: perspective(800px) rotateX(5deg) scale(1); }
-     20% { transform: perspective(800px) rotateX(5deg) scale(1.04); }
-     40% { transform: perspective(800px) rotateX(5deg) scale(0.98); }
-     60% { transform: perspective(800px) rotateX(5deg) scale(1.02); }
-     80% { transform: perspective(800px) rotateX(5deg) scale(0.99); }
-     100% { transform: perspective(800px) rotateX(5deg) scale(1); }
+@keyframes calculatorBounce {
+    0% { transform: perspective(800px) rotateX(5deg) scale(1); }
+    20% { transform: perspective(800px) rotateX(5deg) scale(1.04); }
+    40% { transform: perspective(800px) rotateX(5deg) scale(0.98); }
+    60% { transform: perspective(800px) rotateX(5deg) scale(1.02); }
+    80% { transform: perspective(800px) rotateX(5deg) scale(0.99); }
+    100% { transform: perspective(800px) rotateX(5deg) scale(1); }
+}
+
+.screen {
+    background: #d8f7d8;
+    border: 2px solid #c7f0c8;
+    border-radius: 28px;
+    padding: 20px 22px;
+    min-height: 84px;
+    margin-bottom: 20px;
+    display: flex;
     align-items: center;
     justify-content: flex-end;
-    font-size: 1.8rem;
+    font-size: 2rem;
     color: #195a2b;
     overflow-wrap: anywhere;
     word-break: break-word;
