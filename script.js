@@ -54,6 +54,7 @@ function chooseOperator(op) {
     previousValue = currentValue || previousValue;
     currentValue = '';
     shouldReset = false;
+    updateDisplay();
 }
 
 function calculate() {
@@ -81,7 +82,7 @@ function clearAll() {
     previousValue = '';
     operator = null;
     shouldReset = false;
-    updateDisplay('0');
+    updateDisplay();
 }
 
 function deleteLast() {
