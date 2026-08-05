@@ -70,9 +70,9 @@ function calculate() {
         default: return;
     }
     currentValue = result.toString();
-    updateDisplay(currentValue);
     operator = null;
     previousValue = '';
+    updateDisplay();
     shouldReset = true;
 }
 
