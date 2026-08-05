@@ -161,3 +161,31 @@ document.addEventListener('keydown', event => {
 
 // Mostrar estado inicial en la pantalla
 updateDisplay();
+
+// THEME SWITCHER - tres temas: red, blue, white
+const themes = ['theme-red', 'theme-blue', 'theme-white'];
+let themeIndex = 0;
+const themePrevBtn = document.getElementById('theme-prev');
+const themeNextBtn = document.getElementById('theme-next');
+
+function applyTheme(index) {
+    document.body.classList.remove(...themes);
+    const cls = themes[index % themes.length];
+    document.body.classList.add(cls);
+}
+
+function nextTheme() {
+    themeIndex = (themeIndex + 1) % themes.length;
+    applyTheme(themeIndex);
+}
+
+function prevTheme() {
+    themeIndex = (themeIndex - 1 + themes.length) % themes.length;
+    applyTheme(themeIndex);
+}
+
+themeNextBtn?.addEventListener('click', () => { nextTheme(); playMiau(); });
+themePrevBtn?.addEventListener('click', () => { prevTheme(); playMiau(); });
+
+// initialize theme
+applyTheme(themeIndex);
