@@ -177,22 +177,25 @@ function applyTheme(index) {
 function nextTheme() {
     themeIndex = (themeIndex + 1) % themes.length;
     applyTheme(themeIndex);
-     animateBounce();
- }
- 
- function prevTheme() {
-     themeIndex = (themeIndex - 1 + themes.length) % themes.length;
-     applyTheme(themeIndex);
-     animateBounce();
- }
-+
-+function animateBounce() {
-+    const calculator = document.querySelector('.calculator');
-+    if (!calculator) return;
-+    calculator.classList.remove('bounce');
-+    void calculator.offsetWidth;
-+    calculator.classList.add('bounce');
-+}
+    animateBounce();
+}
+
+function prevTheme() {
+    themeIndex = (themeIndex - 1 + themes.length) % themes.length;
+    applyTheme(themeIndex);
+    animateBounce();
+}
+
+function animateBounce() {
+    const calculator = document.querySelector('.calculator');
+    if (!calculator) return;
+    calculator.classList.remove('bounce');
+    void calculator.offsetWidth;
+    calculator.classList.add('bounce');
+}
+
+themeNextBtn?.addEventListener('click', () => { nextTheme(); playMiau(); });
+themePrevBtn?.addEventListener('click', () => { prevTheme(); playMiau(); });
 
 // initialize theme
 applyTheme(themeIndex);
