@@ -70,6 +70,8 @@ function calculate() {
         case '%': result = a % b; break;
         default: return;
     }
+    const operationText = `${previousValue} ${operator} ${currentValue} = ${result}`;
+    addHistoryEntry(operationText);
     currentValue = result.toString();
     operator = null;
     previousValue = '';
@@ -167,6 +169,11 @@ const themes = ['theme-pink', 'theme-red', 'theme-blue', 'theme-white'];
 let themeIndex = 0;
 const themePrevBtn = document.getElementById('theme-prev');
 const themeNextBtn = document.getElementById('theme-next');
+const historyToggleBtn = document.getElementById('history-toggle');
+const historyCloseBtn = document.getElementById('history-close');
+const historyPanel = document.getElementById('history-panel');
+const historyList = document.getElementById('history-list');
+let historyEntries = [];
 
 function applyTheme(index) {
     document.body.classList.remove(...themes);
@@ -194,8 +201,41 @@ function animateBounce() {
     calculator.classList.add('bounce');
 }
 
+function toggleHistory() {
+    if (!historyPanel) return;
+    historyPanel.classList.toggle('open');
+    historyPanel.setAttribute('aria-hidden', String(!historyPanel.classList.contains('open')));
+}
+
+function updateHistoryPanel() {
+    if (!historyList) return;
+    historyList.innerHTML = '';
+    if (historyEntries.length === 0) {
+        const empty = document.createElement('div');
+        empty.className = 'history-empty';
+        empty.textContent = 'Aún no hay operaciones recientes.';
+        historyList.appendChild(empty);
+        return;
+    }
+    historyEntries.slice().reverse().forEach(entry => {
+        const item = document.createElement('div');
+        item.className = 'history-item';
+        item.textContent = entry;
+        historyList.appendChild(item);
+    });
+}
+
+function addHistoryEntry(entry) {
+    historyEntries.push(entry);
+    if (historyEntries.length > 8) historyEntries.shift();
+    updateHistoryPanel();
+}
+
 themeNextBtn?.addEventListener('click', () => { nextTheme(); playMiau(); });
 themePrevBtn?.addEventListener('click', () => { prevTheme(); playMiau(); });
+ historyToggleBtn?.addEventListener('click', () => { toggleHistory(); playMiau(); });
+ historyCloseBtn?.addEventListener('click', () => { toggleHistory(); });
 
 // initialize theme
 applyTheme(themeIndex);
+updateHistoryPanel();

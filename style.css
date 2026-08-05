@@ -361,6 +361,88 @@ body::after {
 .theme-btn.right { right: 12px; }
 .theme-btn:active { transform: translateY(-50%) scale(0.96); }
 
+.history-btn {
+    position: fixed;
+    top: 14px;
+    right: 14px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: none;
+    background: #ff8ccd;
+    color: #ffffff;
+    font-size: 1rem;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 10px 20px rgba(255, 136, 187, 0.35);
+    cursor: pointer;
+    z-index: 60;
+}
+.history-btn:active {
+    transform: scale(0.96);
+}
+
+.history-panel {
+    position: fixed;
+    top: 70px;
+    right: 14px;
+    width: min(260px, 80vw);
+    max-width: 300px;
+    background: rgba(255, 255, 255, 0.96);
+    border: 1px solid rgba(255, 142, 187, 0.45);
+    border-radius: 20px;
+    box-shadow: 0 18px 40px rgba(167, 66, 121, 0.18);
+    padding: 14px;
+    backdrop-filter: blur(12px);
+    opacity: 0;
+    transform: translateY(-10px);
+    pointer-events: none;
+    transition: opacity 0.24s ease, transform 0.24s ease;
+    z-index: 55;
+}
+.history-panel.open {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+.history-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #8f2861;
+}
+.history-close {
+    border: none;
+    background: transparent;
+    color: #8f2861;
+    font-size: 0.95rem;
+    cursor: pointer;
+}
+.history-list {
+    max-height: 220px;
+    overflow-y: auto;
+    display: grid;
+    gap: 8px;
+}
+.history-item {
+    padding: 10px 12px;
+    background: #fff1fb;
+    border-radius: 14px;
+    border: 1px solid rgba(255, 149, 196, 0.35);
+    font-size: 0.9rem;
+    color: #5d2450;
+    line-height: 1.3;
+}
+.history-empty {
+    color: #a07692;
+    font-size: 0.9rem;
+}
+
 /* Theme: Red - gótico / vampiresco */
 body.theme-red {
     background: radial-gradient(ellipse at center, #15060a 0%, #2b060b 60%, #0b0000 100%);
