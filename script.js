@@ -18,6 +18,38 @@ function toggleCatPanel() {
 
 catToggle?.addEventListener('click', toggleCatPanel);
 
+let audioContext;
+
+function ensureAudioContext() {
+    if (!audioContext) {
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    }
+    return audioContext;
+}
+
+function playTone(frequency, duration = 0.08, type = 'sine', volume = 0.15) {
+    const ctx = ensureAudioContext();
+    const oscillator = ctx.createOscillator();
+    const gain = ctx.createGain();
+    oscillator.type = type;
+    oscillator.frequency.value = frequency;
+    gain.gain.setValueAtTime(volume, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration);
+    oscillator.connect(gain);
+    gain.connect(ctx.destination);
+    oscillator.start();
+    oscillator.stop(ctx.currentTime + duration);
+}
+
+function playKeyTone() {
+    playTone(620, 0.05, 'square', 0.12);
+}
+
+function playResultTone() {
+    playTone(440, 0.18, 'triangle', 0.18);
+    setTimeout(() => playTone(880, 0.12, 'sine', 0.12), 90);
+}
+
 function playMiau() {
     if (!miauSound) return;
     miauSound.currentTime = 0;
@@ -125,27 +157,27 @@ document.addEventListener('keydown', event => {
     const key = event.key;
     if (/^[0-9]$/.test(key)) {
         appendDigit(key);
-        playMiau();
+        playKeyTone();
         return;
     }
     if (key === '.') {
         appendDigit('.');
-        playMiau();
+        playKeyTone();
         return;
     }
     if (key === 'Enter' || key === '=') {
         calculate();
-        playMiau();
+        playResultTone();
         return;
     }
     if (key === 'Backspace') {
         deleteLast();
-        playMiau();
+        playKeyTone();
         return;
     }
     if (key === 'Escape') {
         clearAll();
-        playMiau();
+        playKeyTone();
         return;
     }
     const keyMap = {
