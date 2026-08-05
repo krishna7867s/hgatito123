@@ -177,15 +177,22 @@ function applyTheme(index) {
 function nextTheme() {
     themeIndex = (themeIndex + 1) % themes.length;
     applyTheme(themeIndex);
-}
-
-function prevTheme() {
-    themeIndex = (themeIndex - 1 + themes.length) % themes.length;
-    applyTheme(themeIndex);
-}
-
-themeNextBtn?.addEventListener('click', () => { nextTheme(); playMiau(); });
-themePrevBtn?.addEventListener('click', () => { prevTheme(); playMiau(); });
+     animateBounce();
+ }
+ 
+ function prevTheme() {
+     themeIndex = (themeIndex - 1 + themes.length) % themes.length;
+     applyTheme(themeIndex);
+     animateBounce();
+ }
++
++function animateBounce() {
++    const calculator = document.querySelector('.calculator');
++    if (!calculator) return;
++    calculator.classList.remove('bounce');
++    void calculator.offsetWidth;
++    calculator.classList.add('bounce');
++}
 
 // initialize theme
 applyTheme(themeIndex);
