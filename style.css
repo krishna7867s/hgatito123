@@ -1,0 +1,106 @@
+body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(circle at top, #ffe1f5 0%, #f7c1e8 40%, #f0a1d8 100%);
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.calculator {
+    background: linear-gradient(180deg, #ffb3e3 0%, #ff83d1 100%);
+    border-radius: 36px;
+    box-shadow: 0 26px 45px rgba(121, 44, 98, 0.25), inset 0 -3px 0 rgba(255, 255, 255, 0.4);
+    width: min(380px, 94vw);
+    padding: 28px;
+    transform: perspective(800px) rotateX(5deg);
+}
+
+.screen {
+    background: #d8f7d8;
+    border: 2px solid #c7f0c8;
+    border-radius: 28px;
+    padding: 20px 22px;
+    min-height: 82px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    font-size: 2rem;
+    color: #195a2b;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    box-shadow: inset 0 6px 14px rgba(0, 0, 0, 0.06);
+}
+
+.buttons {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+}
+
+.button {
+    border: none;
+    border-radius: 22px;
+    padding: 20px;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #4a0b3a;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.72) 100%);
+    cursor: pointer;
+    transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+    position: relative;
+    box-shadow: 0 10px 18px rgba(0, 0, 0, 0.12);
+}
+
+.button:hover {
+    transform: translateY(-2px) scale(1.005);
+    box-shadow: 0 16px 26px rgba(0, 0, 0, 0.16);
+}
+
+.button:active {
+    transform: translateY(2px) scale(0.99);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.12);
+}
+
+.button[data-action="operator"] {
+    background: linear-gradient(180deg, #ffd4e8 0%, #ffb7dc 100%);
+    color: #7f2752;
+}
+
+.button.ac {
+    background: linear-gradient(180deg, #ffe9f6 0%, #ffd6ed 100%);
+}
+
+.button.equal {
+    grid-column: span 2;
+    background: linear-gradient(180deg, #9c59b8 0%, #b46cc5 100%);
+    color: #fff;
+}
+
+.button.number {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.button span.icon {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 0.85rem;
+    color: #7a7a7a;
+}
+
+.calculator::before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    border-radius: 36px;
+    pointer-events: none;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.45);
+}

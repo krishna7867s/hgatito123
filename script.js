@@ -1,0 +1,143 @@
+const display = document.getElementById('display');
+const buttons = document.querySelector('.buttons');
+const miauSound = document.getElementById('miau-sound');
+let currentValue = '';
+let previousValue = '';
+let operator = null;
+let shouldReset = false;
+
+function playMiau() {
+    if (!miauSound) return;
+    miauSound.currentTime = 0;
+    miauSound.play().catch(() => {});
+}
+
+function updateDisplay(value) {
+    display.textContent = value || '0';
+}
+
+function appendDigit(digit) {
+    if (shouldReset) {
+        currentValue = '';
+        shouldReset = false;
+    }
+    if (digit === '.' && currentValue.includes('.')) return;
+    currentValue = currentValue === '0' && digit !== '.' ? digit : currentValue + digit;
+    updateDisplay(currentValue);
+}
+
+function chooseOperator(op) {
+    if (currentValue === '' && previousValue !== '') {
+        operator = op;
+        return;
+    }
+    if (previousValue !== '') {
+        calculate();
+    }
+    operator = op;
+    previousValue = currentValue || previousValue;
+    currentValue = '';
+    shouldReset = false;
+}
+
+function calculate() {
+    if (!operator || currentValue === '' || previousValue === '') return;
+    const a = parseFloat(previousValue);
+    const b = parseFloat(currentValue);
+    let result;
+    switch (operator) {
+        case '+': result = a + b; break;
+        case '−': result = a - b; break;
+        case '×': result = a * b; break;
+        case '÷': result = b === 0 ? 'Error' : a / b; break;
+        case '%': result = a % b; break;
+        default: return;
+    }
+    currentValue = result.toString();
+    updateDisplay(currentValue);
+    operator = null;
+    previousValue = '';
+    shouldReset = true;
+}
+
+function clearAll() {
+    currentValue = '';
+    previousValue = '';
+    operator = null;
+    shouldReset = false;
+    updateDisplay('0');
+}
+
+function deleteLast() {
+    if (shouldReset) return;
+    currentValue = currentValue.slice(0, -1);
+    updateDisplay(currentValue);
+}
+
+buttons.addEventListener('click', event => {
+    const button = event.target.closest('button');
+    if (!button) return;
+    const action = button.dataset.action;
+    playMiau();
+
+    if (action === 'digit') {
+        appendDigit(button.dataset.value);
+        return;
+    }
+    if (action === 'operator') {
+        chooseOperator(button.textContent.trim());
+        return;
+    }
+    if (action === 'calculate') {
+        calculate();
+        return;
+    }
+    if (action === 'clear') {
+        clearAll();
+        return;
+    }
+    if (action === 'delete') {
+        deleteLast();
+        return;
+    }
+});
+
+document.addEventListener('keydown', event => {
+    const key = event.key;
+    if (/^[0-9]$/.test(key)) {
+        appendDigit(key);
+        playMiau();
+        return;
+    }
+    if (key === '.') {
+        appendDigit('.');
+        playMiau();
+        return;
+    }
+    if (key === 'Enter' || key === '=') {
+        calculate();
+        playMiau();
+        return;
+    }
+    if (key === 'Backspace') {
+        deleteLast();
+        playMiau();
+        return;
+    }
+    if (key === 'Escape') {
+        clearAll();
+        playMiau();
+        return;
+    }
+    const keyMap = {
+        '+': '+',
+        '-': '−',
+        '*': '×',
+        '/': '÷',
+        '%': '%'
+    };
+    if (keyMap[key]) {
+        chooseOperator(keyMap[key]);
+        playMiau();
+    }
+});
