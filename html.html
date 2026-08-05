@@ -7,12 +7,21 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="cat-background" aria-hidden="true"></div>
     <div class="page-shell">
         <div class="hero-panel">
             <span class="label">edición limitada</span>
             <h1 class="heading">POP STYLE LAB</h1>
             <p class="subheading">Una página vibrante con cálculos, color y actitud urbana.</p>
+        </div>
+        <button class="cat-toggle" id="catToggle" type="button">Mostrar gatito</button>
+        <div class="cat-panel" id="catPanel" aria-hidden="true">
+            <div class="cat-card">
+                <div class="cat-image"></div>
+                <div class="cat-content">
+                    <h2>Gatito estrella</h2>
+                    <p>Un personaje suave que aparece en la página y se despliega con estilo.</p>
+                </div>
+            </div>
         </div>
         <div class="calculator" role="application" aria-label="Calculadora pop style">
             <div class="screen" id="display" aria-live="polite">0</div>
@@ -22,24 +31,25 @@
                 <button class="button" data-action="operator">%</button>
                 <button class="button" data-action="operator">÷</button>
 
-            <button class="button number" data-action="digit" data-value="7"><span class="icon"></span>7</button>
-            <button class="button number" data-action="digit" data-value="8"><span class="icon"></span>8</button>
-            <button class="button number" data-action="digit" data-value="9"><span class="icon"></span>9</button>
-            <button class="button" data-action="operator">×</button>
+                <button class="button number" data-action="digit" data-value="7"><span class="icon"></span>7</button>
+                <button class="button number" data-action="digit" data-value="8"><span class="icon"></span>8</button>
+                <button class="button number" data-action="digit" data-value="9"><span class="icon"></span>9</button>
+                <button class="button" data-action="operator">×</button>
 
-            <button class="button number" data-action="digit" data-value="4"><span class="icon"></span>4</button>
-            <button class="button number" data-action="digit" data-value="5"><span class="icon"></span>5</button>
-            <button class="button number" data-action="digit" data-value="6"><span class="icon"></span>6</button>
-            <button class="button" data-action="operator">−</button>
+                <button class="button number" data-action="digit" data-value="4"><span class="icon"></span>4</button>
+                <button class="button number" data-action="digit" data-value="5"><span class="icon"></span>5</button>
+                <button class="button number" data-action="digit" data-value="6"><span class="icon"></span>6</button>
+                <button class="button" data-action="operator">−</button>
 
-            <button class="button number" data-action="digit" data-value="1"><span class="icon"></span>1</button>
-            <button class="button number" data-action="digit" data-value="2"><span class="icon"></span>2</button>
-            <button class="button number" data-action="digit" data-value="3"><span class="icon"></span>3</button>
-            <button class="button" data-action="operator">+</button>
+                <button class="button number" data-action="digit" data-value="1"><span class="icon"></span>1</button>
+                <button class="button number" data-action="digit" data-value="2"><span class="icon"></span>2</button>
+                <button class="button number" data-action="digit" data-value="3"><span class="icon"></span>3</button>
+                <button class="button" data-action="operator">+</button>
 
-            <button class="button number" data-action="digit" data-value="0"><span class="icon"></span>0</button>
-            <button class="button" data-action="digit" data-value="."><span class="icon"></span>.</button>
-            <button class="button equal" data-action="calculate">=</button>
+                <button class="button number" data-action="digit" data-value="0"><span class="icon"></span>0</button>
+                <button class="button" data-action="digit" data-value="."><span class="icon"></span>.</button>
+                <button class="button equal" data-action="calculate">=</button>
+            </div>
         </div>
     </div>
 

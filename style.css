@@ -33,24 +33,6 @@ body::after {
     pointer-events: none;
 }
 
-.cat-background {
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-    pointer-events: none;
-    overflow: hidden;
-}
-
-.cat {
-    position: absolute;
-    width: 62px;
-    height: 62px;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath fill='%23ffeaff' d='M17 24c0-6 4-11 10-11 0 0 2-9 8-9s8 9 8 9c6 0 10 5 10 11 0 5-3 9-7 10 1 2 1 4 1 6 0 8-7 14-15 14S18 56 18 48c0-2 0-4 1-6-4-1-7-5-7-10z'/%3E%3Cpath fill='%23ff95d4' d='M21 18c1-4 4-7 8-7s7 3 8 7c1 3 0 6-2 8-2 1-5 1-7 0-2 1-5 1-7 0-2-2-3-5-2-8z'/%3E%3Cpath fill='%231d2d55' d='M28 17c0 1 1 2 2 2s2-1 2-2-1-2-2-2-2 1-2 2zM40 17c0 1 1 2 2 2s2-1 2-2-1-2-2-2-2 1-2 2z'/%3E%3Cpath fill='%2355348a' d='M30 34c2 4 8 4 10 0 0 0 3 1 3 4s-3 5-6 5-7-2-7-5 3-4 3-4z'/%3E%3Cpath fill='%23ffe3a8' d='M24 42c4 4 12 5 16 0 1-1 2-1 3-1 1 0 2 1 2 2 0 3-3 5-7 6-4 1-9 0-11-3-1-1-1-3 0-4z'/%3E%3Cpath fill='%23ffb4d6' d='M18 26c3-5 9-8 14-8s11 3 14 8c-2 6-7 10-14 10s-12-4-14-10z'/%3E%3C/svg%3E");
-    background-size: contain;
-    background-repeat: no-repeat;
-    opacity: 0.96;
-    filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.14));
-}
 
 @keyframes sparkle {
     0% {
@@ -134,11 +116,90 @@ body::after {
     line-height: 1.5;
 }
 
+.cat-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    padding: 14px 22px;
+    border: none;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #fb8ae3 0%, #ffacff 100%);
+    color: #321242;
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 10px 26px rgba(120, 37, 128, 0.18);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.cat-toggle:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 12px 30px rgba(120, 37, 128, 0.22);
+}
+
+.cat-panel {
+    max-width: 720px;
+    margin: 0 auto 26px;
+    overflow: hidden;
+    transition: max-height 0.45s ease, opacity 0.45s ease;
+    max-height: 0;
+    opacity: 0;
+}
+
+.cat-panel.active {
+    max-height: 260px;
+    opacity: 1;
+}
+
+.cat-card {
+    display: grid;
+    grid-template-columns: 92px 1fr;
+    gap: 18px;
+    align-items: center;
+    padding: 24px;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(255, 193, 244, 0.9);
+    border-radius: 28px;
+    box-shadow: 0 20px 40px rgba(91, 20, 91, 0.1);
+}
+
+.cat-image {
+    width: 92px;
+    height: 92px;
+    border-radius: 30px;
+    background: linear-gradient(135deg, #ffd2f9 0%, #f7b4ef 100%);
+    box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.6);
+    position: relative;
+}
+
+.cat-image::before {
+    content: "";
+    position: absolute;
+    inset: 10px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath fill='%23fff1d0' d='M16 24c0-6 5-11 11-11 0 0 3-9 9-9s9 9 9 9c6 0 11 5 11 11 0 5-3 9-7 10 1 2 1 4 1 6 0 8-7 14-15 14S17 56 17 48c0-2 0-4 1-6-4-1-7-5-7-10z'/%3E%3Cpath fill='%23ffbad4' d='M20 18c1-4 4-7 8-7s7 3 8 7c1 3 0 6-2 8-2 1-5 1-7 0-2 1-5 1-7 0-2-2-3-5-2-8z'/%3E%3Cpath fill='%2315274f' d='M28 17c0 1 1 2 2 2s2-1 2-2-1-2-2-2-2 1-2 2zM40 17c0 1 1 2 2 2s2-1 2-2-1-2-2-2-2 1-2 2z'/%3E%3Cpath fill='%235a327b' d='M30 34c2 4 8 4 10 0 0 0 3 1 3 4s-3 5-6 5-7-2-7-5 3-4 3-4z'/%3E%3Cpath fill='%23ffe7af' d='M24 42c4 4 12 5 16 0 1-1 2-1 3-1 1 0 2 1 2 2 0 3-3 5-7 6-4 1-9 0-11-3-1-1-1-3 0-4z'/%3E%3C/svg%3E");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.cat-content h2 {
+    margin: 0;
+    font-size: 1.4rem;
+    color: #351d4f;
+}
+
+.cat-content p {
+    margin: 10px 0 0;
+    color: #5b3970;
+    line-height: 1.6;
+}
+
 .calculator {
-    background: linear-gradient(180deg, #ffb3e3 0%, #ff83d1 100%);
+    background: linear-gradient(180deg, #ffe4fb 0%, #ffb6ef 100%);
     border-radius: 36px;
     box-shadow: 0 26px 45px rgba(121, 44, 98, 0.25), inset 0 -3px 0 rgba(255, 255, 255, 0.4);
-    width: min(380px, 94vw);
+    width: min(400px, 94vw);
     padding: 28px;
     transform: perspective(800px) rotateX(5deg);
     position: relative;
