@@ -24,8 +24,12 @@ function playMiau() {
     miauSound.play().catch(() => {});
 }
 
-function updateDisplay(value) {
-    display.textContent = value || '0';
+function updateDisplay() {
+    const left = previousValue ? String(previousValue) : '';
+    const op = operator ? String(operator) : '';
+    const right = currentValue ? String(currentValue) : '';
+    const expr = left + (op ? (left ? ' ' + op + ' ' : op + ' ') : '') + right;
+    display.textContent = expr || '0';
 }
 
 function appendDigit(digit) {
@@ -153,3 +157,6 @@ document.addEventListener('keydown', event => {
         playMiau();
     }
 });
+
+// Mostrar estado inicial en la pantalla
+updateDisplay();
