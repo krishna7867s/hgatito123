@@ -128,9 +128,9 @@ body::after {
     background: linear-gradient(180deg, #ffe4fb 0%, #ffb6ef 100%);
     border-radius: 36px;
     box-shadow: 0 26px 45px rgba(121, 44, 98, 0.25), inset 0 -3px 0 rgba(255, 255, 255, 0.4);
-    width: min(320px, 90vw);
-    max-width: 340px;
-    padding: 24px;
+    width: min(280px, 84vw);
+    max-width: 300px;
+    padding: 18px;
     transform: perspective(800px) rotateX(5deg);
     position: relative;
     z-index: 1;
@@ -140,13 +140,13 @@ body::after {
     background: #d8f7d8;
     border: 2px solid #c7f0c8;
     border-radius: 28px;
-    padding: 20px 22px;
-    min-height: 82px;
+    padding: 14px 16px;
+    min-height: 64px;
     margin-bottom: 20px;
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    font-size: 2rem;
+    font-size: 1.6rem;
     color: #195a2b;
     overflow-wrap: anywhere;
     word-break: break-word;
@@ -156,29 +156,29 @@ body::after {
 .buttons {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 16px;
+    gap: 12px;
 }
 
 .button {
     border: none;
-    border-radius: 22px;
-    padding: 20px;
-    font-size: 1.25rem;
+    border-radius: 18px;
+    padding: 14px;
+    font-size: 1.05rem;
     font-weight: 700;
     color: #4a0b3a;
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.72) 100%);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.82) 100%);
     cursor: pointer;
-    transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+    transition: transform 0.14s ease, box-shadow 0.14s ease, background 0.14s ease;
     position: relative;
-    box-shadow: 0 10px 18px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 8px 14px rgba(0, 0, 0, 0.10);
 }
 
 /* Convert buttons into stylized cat faces */
 .button {
     overflow: visible;
     border-radius: 18px;
-    padding-top: 42px;
-    padding-bottom: 12px;
+    padding-top: 38px;
+    padding-bottom: 10px;
 }
 
 .button::before,
