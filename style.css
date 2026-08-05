@@ -173,6 +173,75 @@ body::after {
     box-shadow: 0 10px 18px rgba(0, 0, 0, 0.12);
 }
 
+/* Convert buttons into stylized cat faces */
+.button {
+    overflow: visible;
+    border-radius: 18px;
+    padding-top: 84px;
+    padding-bottom: 12px;
+}
+
+.button::before,
+.button::after {
+    content: '';
+    position: absolute;
+    top: -10px;
+    width: 28px;
+    height: 26px;
+    background: inherit;
+    clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+    transform-origin: center;
+    z-index: 0;
+    filter: drop-shadow(0 2px 2px rgba(0,0,0,0.08));
+}
+.button::before { left: 16px; }
+.button::after { right: 16px; }
+
+/* Face circle drawn by .icon in center */
+.button .icon {
+    position: absolute;
+    top: 18px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 28%, #fff9ef 0%, #ffdfee 45%, #ffd1ef 100%);
+    box-shadow: inset 0 6px 10px rgba(255,255,255,0.4), 0 6px 12px rgba(0,0,0,0.08);
+    z-index: 2;
+}
+
+.button .icon::before {
+    /* eyes: left eye plus box-shadow for right eye */
+    content: '';
+    position: absolute;
+    top: 36%;
+    left: 30%;
+    width: 8px;
+    height: 8px;
+    background: #6d3c67;
+    border-radius: 50%;
+    box-shadow: 18px 0 0 #6d3c67;
+}
+
+.button .icon::after {
+    /* nose/mouth */
+    content: '';
+    position: absolute;
+    top: 60%;
+    left: 50%;
+    width: 10px;
+    height: 8px;
+    transform: translateX(-50%);
+    background: transparent;
+    border-bottom: 3px solid #f48fb1;
+    border-left: 3px solid transparent;
+    border-right: 3px solid transparent;
+    border-radius: 2px;
+}
+
+/* Ensure button label text appears below the face: handled globally by .button padding-top */
+
 .button:hover {
     transform: translateY(-2px) scale(1.005);
     box-shadow: 0 16px 26px rgba(0, 0, 0, 0.16);
@@ -204,17 +273,7 @@ body::after {
     justify-content: center;
 }
 
-.button span.icon {
-    position: absolute;
-    top: 12px;
-    left: 12px;
-    width: 18px;
-    height: 18px;
-    display: block;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath fill='%23fff1d0' d='M16 24c0-6 5-11 11-11 0 0 3-9 9-9s9 9 9 9c6 0 11 5 11 11 0 5-3 9-7 10 1 2 1 4 1 6 0 8-7 14-15 14S17 56 17 48c0-2 0-4 1-6-4-1-7-5-7-10z'/%3E%3Cpath fill='%23f4aab9' d='M20 18c1-4 4-7 8-7s7 3 8 7c1 3 0 6-2 8-2 1-5 1-7 0-2 1-5 1-7 0-2-2-3-5-2-8z'/%3E%3Cpath fill='%236d3c67' d='M28 17c0 1 1 2 2 2s2-1 2-2-1-2-2-2-2 1-2 2zM40 17c0 1 1 2 2 2s2-1 2-2-1-2-2-2-2 1-2 2z'/%3E%3Cpath fill='%23583043' d='M30 34c2 4 8 4 10 0 0 0 3 1 3 4s-3 5-6 5-7-2-7-5 3-4 3-4z'/%3E%3Cpath fill='%23f5d5a0' d='M24 42c4 4 12 5 16 0 1-1 2-1 3-1 1 0 2 1 2 2 0 3-3 5-7 6-4 1-9 0-11-3-1-1-1-3 0-4z'/%3E%3Cpath fill='%23f8c4d0' d='M18 26c3-5 9-8 14-8s11 3 14 8c-2 6-7 10-14 10s-12-4-14-10z'/%3E%3C/svg%3E");
-    background-size: contain;
-    background-repeat: no-repeat;
-}
+/* icon handled by .button .icon rules above */
 
 .calculator::before {
     content: "";
