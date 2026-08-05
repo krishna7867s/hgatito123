@@ -177,7 +177,7 @@ body::after {
 .button {
     overflow: visible;
     border-radius: 18px;
-    padding-top: 84px;
+    padding-top: 42px;
     padding-bottom: 12px;
 }
 
@@ -185,59 +185,27 @@ body::after {
 .button::after {
     content: '';
     position: absolute;
-    top: -10px;
-    width: 28px;
-    height: 26px;
+    top: -6px;
+    width: 20px;
+    height: 18px;
     background: inherit;
     clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
     transform-origin: center;
     z-index: 0;
-    filter: drop-shadow(0 2px 2px rgba(0,0,0,0.08));
 }
-.button::before { left: 16px; }
-.button::after { right: 16px; }
+.button::before { left: 12px; }
+.button::after { right: 12px; }
 
 /* Face circle drawn by .icon in center */
+/* keep .icon element but hide the big face; only ears remain above the button */
 .button .icon {
     position: absolute;
-    top: 18px;
+    top: 6px;
     left: 50%;
     transform: translateX(-50%);
-    width: 56px;
-    height: 56px;
-    border-radius: 50%;
-    background: radial-gradient(circle at 35% 28%, #fff9ef 0%, #ffdfee 45%, #ffd1ef 100%);
-    box-shadow: inset 0 6px 10px rgba(255,255,255,0.4), 0 6px 12px rgba(0,0,0,0.08);
+    width: 0;
+    height: 0;
     z-index: 2;
-}
-
-.button .icon::before {
-    /* eyes: left eye plus box-shadow for right eye */
-    content: '';
-    position: absolute;
-    top: 36%;
-    left: 30%;
-    width: 8px;
-    height: 8px;
-    background: #6d3c67;
-    border-radius: 50%;
-    box-shadow: 18px 0 0 #6d3c67;
-}
-
-.button .icon::after {
-    /* nose/mouth */
-    content: '';
-    position: absolute;
-    top: 60%;
-    left: 50%;
-    width: 10px;
-    height: 8px;
-    transform: translateX(-50%);
-    background: transparent;
-    border-bottom: 3px solid #f48fb1;
-    border-left: 3px solid transparent;
-    border-right: 3px solid transparent;
-    border-radius: 2px;
 }
 
 /* Ensure button label text appears below the face: handled globally by .button padding-top */
