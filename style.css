@@ -229,31 +229,56 @@ body::after {
 }
 
 /* Estrellas de fondo: varias capas con brillo y movimiento */
+
 .stars {
     position: absolute;
     inset: 0;
     z-index: 0;
     pointer-events: none;
     mix-blend-mode: screen;
+    /* base layer: many tiny points */
     background-image:
-        radial-gradient(circle, rgba(255,255,255,1) 0.6px, transparent 0.6px),
-        radial-gradient(circle, rgba(255,245,200,0.95) 0.9px, transparent 0.9px),
-        radial-gradient(circle, rgba(255,220,255,0.9) 1.2px, transparent 1.2px);
-    background-size: 18px 18px, 42px 42px, 86px 86px;
-    background-position: 12% 20%, 70% 40%, 40% 80%;
+        radial-gradient(circle, rgba(255,255,255,0.95) 0.7px, transparent 0.7px),
+        radial-gradient(circle, rgba(255,230,255,0.9) 1.1px, transparent 1.1px),
+        radial-gradient(circle, rgba(255,245,200,0.9) 0.9px, transparent 0.9px);
+    background-size: 16px 16px, 36px 36px, 72px 72px;
+    background-position: 8% 12%, 68% 38%, 38% 78%;
     opacity: 0.95;
-    animation: starsDrift 40s linear infinite;
+    animation: starsDrift 36s linear infinite;
 }
 
+/* slow twinkling layer */
+.stars::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image:
+        radial-gradient(circle at 10% 20%, rgba(255,255,255,0.95) 0.9px, transparent 0.9px),
+        radial-gradient(circle at 70% 35%, rgba(255,240,200,0.95) 1.2px, transparent 1.2px),
+        radial-gradient(circle at 40% 80%, rgba(255,220,255,0.95) 1.6px, transparent 1.6px);
+    background-repeat: no-repeat;
+    mix-blend-mode: screen;
+    opacity: 0.0;
+    transform-origin: center;
+    animation: starsTwinkle 4.2s ease-in-out infinite;
+}
+
+/* fast twinkle sparks */
 .stars::after {
     content: '';
     position: absolute;
     inset: 0;
-    background-image:
-        radial-gradient(circle, rgba(255,255,255,0.0) 0, transparent 0),
-        radial-gradient(circle, rgba(255,255,255,0.0) 0, transparent 0);
-    animation: starsTwinkle 3.6s ease-in-out infinite;
     pointer-events: none;
+    background-image:
+        radial-gradient(circle at 20% 15%, rgba(255,255,255,1) 0.9px, transparent 0.9px),
+        radial-gradient(circle at 45% 30%, rgba(255,255,255,0.95) 1.1px, transparent 1.1px),
+        radial-gradient(circle at 80% 70%, rgba(255,245,200,0.95) 1.4px, transparent 1.4px),
+        radial-gradient(circle at 60% 85%, rgba(255,220,255,0.95) 1.0px, transparent 1.0px);
+    background-repeat: no-repeat;
+    mix-blend-mode: screen;
+    opacity: 0.0;
+    animation: starsTwinkleFast 2.2s ease-in-out infinite;
 }
 
 @keyframes starsDrift {
@@ -263,11 +288,21 @@ body::after {
 }
 
 @keyframes starsTwinkle {
-    0% { opacity: 0.06; transform: scale(1); }
-    25% { opacity: 0.28; transform: scale(1.05); }
-    50% { opacity: 0.08; transform: scale(0.98); }
-    75% { opacity: 0.32; transform: scale(1.06); }
-    100% { opacity: 0.06; transform: scale(1); }
+    0% { opacity: 0.02; transform: scale(0.98); }
+    20% { opacity: 0.26; transform: scale(1.04); }
+    40% { opacity: 0.08; transform: scale(0.99); }
+    60% { opacity: 0.32; transform: scale(1.06); }
+    80% { opacity: 0.15; transform: scale(1.01); }
+    100% { opacity: 0.02; transform: scale(0.98); }
+}
+
+@keyframes starsTwinkleFast {
+    0% { opacity: 0.00; transform: scale(0.96); }
+    10% { opacity: 0.9; transform: scale(1.12); }
+    30% { opacity: 0.12; transform: scale(1.00); }
+    50% { opacity: 0.0; transform: scale(0.98); }
+    70% { opacity: 0.7; transform: scale(1.08); }
+    100% { opacity: 0.0; transform: scale(0.96); }
 }
 
 /* Asegurar que el contenido principal esté por encima de las estrellas */
