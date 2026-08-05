@@ -25,18 +25,18 @@ body::before {
 }
 
 body::after {
-    content: "GATITOS   GATITOS   GATITOS   GATITOS";
+    content: "🐱 🐱 🐱   🐱 🐱 🐱   🐱 🐱 🐱   🐱 🐱 🐱";
     position: absolute;
     inset: 0;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 2.2rem;
-    color: rgba(255, 255, 255, 0.4);
+    color: rgba(255, 255, 255, 0.35);
     white-space: pre;
     pointer-events: none;
     transform: rotate(-10deg);
-    animation: jumpCats 4s ease-in-out infinite;
+    animation: floatCats 6s ease-in-out infinite;
 }
 
 @keyframes sparkle {
@@ -51,22 +51,30 @@ body::after {
     }
 }
 
-@keyframes jumpCats {
-    0%, 100% {
-        transform: translateY(0) rotate(-10deg);
+@keyframes floatCats {
+    0% {
+        transform: translate(-12%, 0) rotate(-10deg);
+        opacity: 0.28;
+    }
+    20% {
+        transform: translate(14%, -18px) rotate(-11deg);
+        opacity: 0.4;
+    }
+    40% {
+        transform: translate(-8%, -8px) rotate(-9deg);
         opacity: 0.35;
     }
-    25% {
-        transform: translateY(-16px) rotate(-10deg);
-        opacity: 0.45;
+    60% {
+        transform: translate(10%, 10px) rotate(-10deg);
+        opacity: 0.38;
     }
-    50% {
-        transform: translateY(0) rotate(-10deg);
-        opacity: 0.35;
-    }
-    75% {
-        transform: translateY(-10px) rotate(-10deg);
+    80% {
+        transform: translate(-6%, -14px) rotate(-10deg);
         opacity: 0.42;
+    }
+    100% {
+        transform: translate(-12%, 0) rotate(-10deg);
+        opacity: 0.28;
     }
 }
 
