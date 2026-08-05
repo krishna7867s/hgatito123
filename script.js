@@ -129,26 +129,30 @@ buttons.addEventListener('click', event => {
     const button = event.target.closest('button');
     if (!button) return;
     const action = button.dataset.action;
-    playMiau();
 
     if (action === 'digit') {
         appendDigit(button.dataset.value);
+        playKeyTone();
         return;
     }
     if (action === 'operator') {
         chooseOperator(button.textContent.trim());
+        playKeyTone();
         return;
     }
     if (action === 'calculate') {
         calculate();
+        playResultTone();
         return;
     }
     if (action === 'clear') {
         clearAll();
+        playKeyTone();
         return;
     }
     if (action === 'delete') {
         deleteLast();
+        playKeyTone();
         return;
     }
 });
