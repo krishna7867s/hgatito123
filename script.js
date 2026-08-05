@@ -162,8 +162,8 @@ document.addEventListener('keydown', event => {
 // Mostrar estado inicial en la pantalla
 updateDisplay();
 
-// THEME SWITCHER - tres temas: red, blue, white
-const themes = ['theme-red', 'theme-blue', 'theme-white'];
+// THEME SWITCHER - temas: pink, red, blue, white
+const themes = ['theme-pink', 'theme-red', 'theme-blue', 'theme-white'];
 let themeIndex = 0;
 const themePrevBtn = document.getElementById('theme-prev');
 const themeNextBtn = document.getElementById('theme-next');

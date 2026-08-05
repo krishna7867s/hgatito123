@@ -405,3 +405,18 @@ body.theme-white .theme-btn { background: rgba(255,255,255,0.98); color: #6b3b63
 
 /* Ensure stars and page-shell stacking interact nicely with theme backgrounds */
 .stars { mix-blend-mode: screen; }
+
+/* Theme: Pink - pastel / default rosa */
+body.theme-pink {
+    background: radial-gradient(circle at top left, #fff0fd 0%, #fbd0f6 28%, #ffd1ef 60%, #fff8ff 100%);
+    color: #311b40;
+}
+body.theme-pink .calculator {
+    background: linear-gradient(180deg, #ffe4fb 0%, #ffb6ef 100%);
+    box-shadow: 0 26px 45px rgba(121, 44, 98, 0.25), inset 0 -3px 0 rgba(255, 255, 255, 0.4);
+}
+body.theme-pink .screen { background: #d8f7d8; color: #195a2b; border-color: #c7f0c8; }
+body.theme-pink .button { background: linear-gradient(180deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.82) 100%); color: #4a0b3a; }
+body.theme-pink .button[data-action="operator"] { background: linear-gradient(180deg,#ffd4e8 0%, #ffb7dc 100%); color: #7f2752 }
+body.theme-pink .button.equal { background: linear-gradient(180deg,#9c59b8 0%, #b46cc5 100%); color:#fff }
+body.theme-pink .theme-btn { background: rgba(255,255,255,0.9); color: #4a0b3a; box-shadow: 0 8px 18px rgba(0,0,0,0.12); }
