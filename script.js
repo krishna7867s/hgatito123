@@ -12,7 +12,9 @@ let musicEnabled = false;
 let musicTimer = null;
 let musicContext = null;
 let musicMasterGain = null;
-let musicStepIndex = 0;
+let musicOscillator = null;
+let musicGain = null;
+let musicFilter = null;
 
 function toggleCatPanel() {
     if (!catPanel || !catToggle) return;
@@ -66,7 +68,7 @@ function ensureMusicContext() {
     if (!musicContext) {
         musicContext = new (window.AudioContext || window.webkitAudioContext)();
         musicMasterGain = musicContext.createGain();
-        musicMasterGain.gain.value = 0.032;
+        musicMasterGain.gain.value = 0.12;
         musicMasterGain.connect(musicContext.destination);
     }
     return musicContext;
@@ -79,48 +81,50 @@ function updateMusicButton() {
     musicToggle.setAttribute('aria-label', musicEnabled ? 'Pausar música' : 'Reproducir música');
 }
 
-function playSoftLoop() {
-    if (!musicEnabled) return;
-    const ctx = ensureMusicContext();
-    const melody = [
-        { freq: 392, duration: 0.9, type: 'sine' },
-        { freq: 440, duration: 0.95, type: 'triangle' },
-        { freq: 523, duration: 0.85, type: 'sine' },
-        { freq: 587, duration: 1.05, type: 'triangle' }
-    ];
-    const step = melody[musicStepIndex % melody.length];
-    const now = ctx.currentTime;
-    const oscillator = ctx.createOscillator();
-    const gain = ctx.createGain();
-    const filter = ctx.createBiquadFilter();
-
-    filter.type = 'lowpass';
-    filter.frequency.value = 1200;
-    oscillator.type = step.type;
-    oscillator.frequency.setValueAtTime(step.freq, now);
-    gain.gain.setValueAtTime(0.0001, now);
-    gain.gain.linearRampToValueAtTime(0.028, now + 0.18);
-    gain.gain.exponentialRampToValueAtTime(0.0001, now + step.duration);
-
-    oscillator.connect(filter);
-    filter.connect(gain);
-    gain.connect(musicMasterGain);
-    oscillator.start(now);
-    oscillator.stop(now + step.duration);
-
-    musicStepIndex = (musicStepIndex + 1) % melody.length;
-    musicTimer = setTimeout(playSoftLoop, step.duration * 1000 + 220);
-}
-
 function startMusic() {
     if (musicEnabled) return;
     const ctx = ensureMusicContext();
     if (ctx.state === 'suspended') {
         ctx.resume().catch(() => {});
     }
+
     musicEnabled = true;
     updateMusicButton();
-    playSoftLoop();
+
+    if (musicOscillator) {
+        musicOscillator.stop();
+    }
+
+    musicOscillator = ctx.createOscillator();
+    musicGain = ctx.createGain();
+    musicFilter = ctx.createBiquadFilter();
+    musicFilter.type = 'lowpass';
+    musicFilter.frequency.value = 1400;
+
+    musicOscillator.type = 'sine';
+    musicOscillator.frequency.setValueAtTime(440, ctx.currentTime);
+    musicGain.gain.setValueAtTime(0.0001, ctx.currentTime);
+    musicGain.gain.linearRampToValueAtTime(0.16, ctx.currentTime + 0.2);
+
+    musicOscillator.connect(musicFilter);
+    musicFilter.connect(musicGain);
+    musicGain.connect(musicMasterGain);
+    musicOscillator.start();
+
+    const notes = [440, 523, 587, 659, 587, 523, 440];
+    let noteIndex = 0;
+
+    function playNote() {
+        if (!musicEnabled || !musicOscillator || !musicGain || !musicFilter) return;
+        const note = notes[noteIndex % notes.length];
+        musicOscillator.frequency.setValueAtTime(note, ctx.currentTime + 0.01);
+        musicGain.gain.setValueAtTime(0.15, ctx.currentTime + 0.01);
+        musicGain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.8);
+        noteIndex += 1;
+        musicTimer = window.setTimeout(playNote, 800);
+    }
+
+    playNote();
 }
 
 function stopMusic() {
@@ -131,9 +135,16 @@ function stopMusic() {
         clearTimeout(musicTimer);
         musicTimer = null;
     }
-    if (musicContext && musicMasterGain) {
-        musicMasterGain.gain.setTargetAtTime(0.0001, musicContext.currentTime, 0.12);
+    if (musicGain) {
+        musicGain.gain.cancelScheduledValues(musicContext.currentTime);
+        musicGain.gain.setValueAtTime(0.0001, musicContext.currentTime);
     }
+    if (musicOscillator) {
+        musicOscillator.stop(musicContext.currentTime + 0.02);
+        musicOscillator = null;
+    }
+    musicGain = null;
+    musicFilter = null;
 }
 
 function toggleMusic() {
@@ -364,8 +375,14 @@ historyToggleBtn?.addEventListener('click', () => { toggleHistory(); playMiau();
 historyCloseBtn?.addEventListener('click', () => { toggleHistory(); });
 musicToggle?.addEventListener('click', event => {
     event.stopPropagation();
-    toggleMusic();
+    void toggleMusic();
 });
+
+window.addEventListener('pointerdown', () => {
+    if (!musicEnabled) {
+        void startMusic();
+    }
+}, { once: true });
 
 // initialize theme
 applyTheme(themeIndex);
