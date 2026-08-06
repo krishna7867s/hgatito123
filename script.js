@@ -336,7 +336,11 @@ function isMathQuestion(text) {
 }
 
 function getKaoEmoji() {
-    const emojis = ['ʘ‿ʘ', '◕‿◕', '≧◡≦', '૮ ˶ᵔ ᵕ ᵔ˶ ა', '˶ᵔ ᵕ ᵔ˶', '•ᴗ•'];
+    const emojis = [
+        'ʘ‿ʘ', '◕‿◕', '≧◡≦', '૮ ˶ᵔ ᵕ ᵔ˶ ა', '˶ᵔ ᵕ ᵔ˶', '•ᴗ•',
+        '◠‿◠', '╰(▔∀▔)╯', '（＾ｖ＾）', '≧ω≦', '˙◠˙', '✿◡✿',
+        '₍ᵔᵕᵔ₎', '♡´･ᴗ･`♡', '⸜(˶ᵔ ᵕ ᵔ˶)⸝', '⋆｡˚ ☁︎ ˚｡⋆', '(´• ω •`)', '☁️♡'
+    ];
     return emojis[Math.floor(Math.random() * emojis.length)];
 }
 
@@ -470,10 +474,21 @@ musicToggle?.addEventListener('click', event => {
     event.stopPropagation();
     void toggleMusic();
 });
-aiToggle?.addEventListener('click', () => {
+aiToggle?.addEventListener('click', event => {
+    event.preventDefault();
+    event.stopPropagation();
     toggleAiPanel();
 });
 aiForm?.addEventListener('submit', handleAiSubmit);
+
+window.addEventListener('click', event => {
+    if (!aiPanel || !aiToggle) return;
+    const clickedInside = aiPanel.contains(event.target) || aiToggle.contains(event.target);
+    if (!clickedInside && aiPanel.classList.contains('open')) {
+        aiPanel.classList.remove('open');
+        aiPanel.setAttribute('aria-hidden', 'true');
+    }
+});
 
 window.addEventListener('pointerdown', () => {
     if (!musicEnabled) {
