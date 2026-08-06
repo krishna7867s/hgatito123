@@ -13,6 +13,19 @@
             <h1 class="heading">Calculadora :3</h1>
             <p class="subheading">(๑•᎑•๑)</p>
         </div>
+
+        <div class="ai-assistant-wrapper">
+            <button id="ai-toggle" class="ai-toggle" aria-label="Abrir asistente matemático">꒰ᐢ. .ᐢ꒱₊˚⊹ ia</button>
+            <div id="ai-panel" class="ai-panel" aria-hidden="true">
+                <div class="ai-header">Asistente de matemáticas</div>
+                <div id="ai-messages" class="ai-messages"></div>
+                <form id="ai-form" class="ai-form">
+                    <input id="ai-input" class="ai-input" type="text" placeholder="Pregunta algo de matemáticas..." autocomplete="off">
+                    <button type="submit" class="ai-send">Enviar</button>
+                </form>
+            </div>
+        </div>
+
         <div class="calculator" role="application" aria-label="Calculadora" >
             <div class="screen" id="display" aria-live="polite">0</div>
             <div class="buttons">

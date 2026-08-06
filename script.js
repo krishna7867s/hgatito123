@@ -311,7 +311,79 @@ const historyToggleBtn = document.getElementById('history-toggle');
 const historyCloseBtn = document.getElementById('history-close');
 const historyPanel = document.getElementById('history-panel');
 const historyList = document.getElementById('history-list');
+const aiToggle = document.getElementById('ai-toggle');
+const aiPanel = document.getElementById('ai-panel');
+const aiMessages = document.getElementById('ai-messages');
+const aiForm = document.getElementById('ai-form');
+const aiInput = document.getElementById('ai-input');
 let historyEntries = [];
+
+function addAiMessage(text, isUser = false) {
+    if (!aiMessages) return;
+    const bubble = document.createElement('div');
+    bubble.className = `ai-bubble ${isUser ? 'user' : 'bot'}`;
+    bubble.textContent = text;
+    aiMessages.appendChild(bubble);
+    aiMessages.scrollTop = aiMessages.scrollHeight;
+}
+
+function isMathQuestion(text) {
+    const lower = text.toLowerCase();
+    const mathKeywords = ['matem', 'algebra', 'geometr', 'fracc', 'suma', 'resta', 'multiplica', 'division', 'porcentaje', 'ecuac', 'deriv', 'integr', 'raiz', 'promedio', 'media', 'logaritm', 'funcion', 'problema', 'calcula', 'resolver', 'operac', 'numero', 'número', 'x', 'y'];
+    const hasNumber = /\d/.test(text);
+    const hasOperator = /[+\-*/=]/.test(text);
+    return mathKeywords.some(keyword => lower.includes(keyword)) || (hasNumber && (hasOperator || /raiz|porcentaje|por ciento/.test(lower)));
+}
+
+function solveMathQuestion(text) {
+    const trimmed = text.trim();
+    const simpleSum = trimmed.match(/(-?\d+)\s*([+\-*/])\s*(-?\d+)/);
+    if (simpleSum) {
+        const [, a, op, b] = simpleSum;
+        const left = Number(a);
+        const right = Number(b);
+        let result;
+        if (op === '+') result = left + right;
+        if (op === '-') result = left - right;
+        if (op === '*') result = left * right;
+        if (op === '/') result = right === 0 ? 'Error' : left / right;
+        return `Como profesional de matemáticas, el resultado es ${result}. Te lo explico de forma clara y ordenada: opero con los valores dados y simplifico el resultado. ʘ‿ʘ`;
+    }
+
+    const sqrtMatch = trimmed.match(/raiz(?:\s+cuadrada)?\s+de\s*(-?\d+)/i) || trimmed.match(/sqrt\((-?\d+)\)/i);
+    if (sqrtMatch) {
+        const value = Number(sqrtMatch[1]);
+        return `Como profesional de matemáticas, la raíz cuadrada de ${value} es ${Math.sqrt(value).toFixed(2)}. ʘ‿ʘ`;
+    }
+
+    return `Como profesional de matemáticas, voy a ayudarte a resolverlo paso a paso con claridad y precisión. Si me das los datos exactos, te lo explico bien. ʘ‿ʘ`;
+}
+
+function toggleAiPanel() {
+    if (!aiPanel) return;
+    aiPanel.classList.toggle('open');
+    const visible = aiPanel.classList.contains('open');
+    aiPanel.setAttribute('aria-hidden', String(!visible));
+    if (visible && aiInput) {
+        aiInput.focus();
+    }
+}
+
+function handleAiSubmit(event) {
+    event.preventDefault();
+    if (!aiInput) return;
+    const userText = aiInput.value.trim();
+    if (!userText) return;
+    addAiMessage(userText, true);
+    aiInput.value = '';
+
+    if (!isMathQuestion(userText)) {
+        addAiMessage('no estoy disponible para responder eso! ve a Google! ૮ ˶ᵔ ᵕ ᵔ˶ ა');
+        return;
+    }
+
+    addAiMessage(solveMathQuestion(userText));
+}
 
 function applyTheme(index) {
     document.body.classList.remove(...themes);
@@ -377,6 +449,10 @@ musicToggle?.addEventListener('click', event => {
     event.stopPropagation();
     void toggleMusic();
 });
+aiToggle?.addEventListener('click', () => {
+    toggleAiPanel();
+});
+aiForm?.addEventListener('submit', handleAiSubmit);
 
 window.addEventListener('pointerdown', () => {
     if (!musicEnabled) {
@@ -388,3 +464,4 @@ window.addEventListener('pointerdown', () => {
 applyTheme(themeIndex);
 updateMusicButton();
 updateHistoryPanel();
+addAiMessage('Hola, soy tu asistente rosita para matemáticas. Pregúntame cualquier duda y te ayudaré con calma.');
