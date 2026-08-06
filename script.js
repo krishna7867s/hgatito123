@@ -335,6 +335,11 @@ function isMathQuestion(text) {
     return mathKeywords.some(keyword => lower.includes(keyword)) || (hasNumber && (hasOperator || /raiz|porcentaje|por ciento/.test(lower)));
 }
 
+function getKaoEmoji() {
+    const emojis = ['ʘ‿ʘ', '◕‿◕', '≧◡≦', '૮ ˶ᵔ ᵕ ᵔ˶ ა', '˶ᵔ ᵕ ᵔ˶', '•ᴗ•'];
+    return emojis[Math.floor(Math.random() * emojis.length)];
+}
+
 function solveMathQuestion(text) {
     const trimmed = text.trim();
     const simpleSum = trimmed.match(/(-?\d+)\s*([+\-*/])\s*(-?\d+)/);
@@ -347,16 +352,16 @@ function solveMathQuestion(text) {
         if (op === '-') result = left - right;
         if (op === '*') result = left * right;
         if (op === '/') result = right === 0 ? 'Error' : left / right;
-        return `Como profesional de matemáticas, el resultado es ${result}. Te lo explico de forma clara y ordenada: opero con los valores dados y simplifico el resultado. ʘ‿ʘ`;
+        return `Vamos con ello: el resultado es ${result}. La idea es operar con los valores dados y dejar la respuesta de forma clara y ordenada. ${getKaoEmoji()}`;
     }
 
     const sqrtMatch = trimmed.match(/raiz(?:\s+cuadrada)?\s+de\s*(-?\d+)/i) || trimmed.match(/sqrt\((-?\d+)\)/i);
     if (sqrtMatch) {
         const value = Number(sqrtMatch[1]);
-        return `Como profesional de matemáticas, la raíz cuadrada de ${value} es ${Math.sqrt(value).toFixed(2)}. ʘ‿ʘ`;
+        return `La raíz cuadrada de ${value} es ${Math.sqrt(value).toFixed(2)}. Se resuelve con calma y paso a paso cuando hace falta. ${getKaoEmoji()}`;
     }
 
-    return `Como profesional de matemáticas, voy a ayudarte a resolverlo paso a paso con claridad y precisión. Si me das los datos exactos, te lo explico bien. ʘ‿ʘ`;
+    return `Puedo ayudarte a resolverlo con un enfoque claro y ordenado. Si me compartes los datos exactos, te explico la solución paso a paso. ${getKaoEmoji()}`;
 }
 
 function toggleAiPanel() {
@@ -464,4 +469,4 @@ window.addEventListener('pointerdown', () => {
 applyTheme(themeIndex);
 updateMusicButton();
 updateHistoryPanel();
-addAiMessage('Hola, soy tu asistente rosita para matemáticas. Pregúntame cualquier duda y te ayudaré con calma.');
+addAiMessage('Hola, soy tu asistente rosita de matemáticas. Puedo ayudarte con ideas claras, pasos ordenados y respuestas tranquilas.');
