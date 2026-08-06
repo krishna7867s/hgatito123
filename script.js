@@ -3,10 +3,16 @@ const buttons = document.querySelector('.buttons');
 const miauSound = document.getElementById('miau-sound');
 const catToggle = document.getElementById('catToggle');
 const catPanel = document.getElementById('catPanel');
+const musicToggle = document.getElementById('music-toggle');
 let currentValue = '';
 let previousValue = '';
 let operator = null;
 let shouldReset = false;
+let musicEnabled = false;
+let musicTimer = null;
+let musicContext = null;
+let musicMasterGain = null;
+let musicStepIndex = 0;
 
 function toggleCatPanel() {
     if (!catPanel || !catToggle) return;
@@ -54,6 +60,88 @@ function playMiau() {
     if (!miauSound) return;
     miauSound.currentTime = 0;
     miauSound.play().catch(() => {});
+}
+
+function ensureMusicContext() {
+    if (!musicContext) {
+        musicContext = new (window.AudioContext || window.webkitAudioContext)();
+        musicMasterGain = musicContext.createGain();
+        musicMasterGain.gain.value = 0.032;
+        musicMasterGain.connect(musicContext.destination);
+    }
+    return musicContext;
+}
+
+function updateMusicButton() {
+    if (!musicToggle) return;
+    musicToggle.classList.toggle('muted', !musicEnabled);
+    musicToggle.textContent = musicEnabled ? '♫' : '♩';
+    musicToggle.setAttribute('aria-label', musicEnabled ? 'Pausar música' : 'Reproducir música');
+}
+
+function playSoftLoop() {
+    if (!musicEnabled) return;
+    const ctx = ensureMusicContext();
+    const melody = [
+        { freq: 392, duration: 0.9, type: 'sine' },
+        { freq: 440, duration: 0.95, type: 'triangle' },
+        { freq: 523, duration: 0.85, type: 'sine' },
+        { freq: 587, duration: 1.05, type: 'triangle' }
+    ];
+    const step = melody[musicStepIndex % melody.length];
+    const now = ctx.currentTime;
+    const oscillator = ctx.createOscillator();
+    const gain = ctx.createGain();
+    const filter = ctx.createBiquadFilter();
+
+    filter.type = 'lowpass';
+    filter.frequency.value = 1200;
+    oscillator.type = step.type;
+    oscillator.frequency.setValueAtTime(step.freq, now);
+    gain.gain.setValueAtTime(0.0001, now);
+    gain.gain.linearRampToValueAtTime(0.028, now + 0.18);
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + step.duration);
+
+    oscillator.connect(filter);
+    filter.connect(gain);
+    gain.connect(musicMasterGain);
+    oscillator.start(now);
+    oscillator.stop(now + step.duration);
+
+    musicStepIndex = (musicStepIndex + 1) % melody.length;
+    musicTimer = setTimeout(playSoftLoop, step.duration * 1000 + 220);
+}
+
+function startMusic() {
+    if (musicEnabled) return;
+    const ctx = ensureMusicContext();
+    if (ctx.state === 'suspended') {
+        ctx.resume().catch(() => {});
+    }
+    musicEnabled = true;
+    updateMusicButton();
+    playSoftLoop();
+}
+
+function stopMusic() {
+    if (!musicEnabled) return;
+    musicEnabled = false;
+    updateMusicButton();
+    if (musicTimer) {
+        clearTimeout(musicTimer);
+        musicTimer = null;
+    }
+    if (musicContext && musicMasterGain) {
+        musicMasterGain.gain.setTargetAtTime(0.0001, musicContext.currentTime, 0.12);
+    }
+}
+
+function toggleMusic() {
+    if (musicEnabled) {
+        stopMusic();
+    } else {
+        startMusic();
+    }
 }
 
 function updateDisplay() {
@@ -130,6 +218,8 @@ buttons.addEventListener('click', event => {
     if (!button) return;
     const action = button.dataset.action;
 
+    startMusic();
+
     if (action === 'digit') {
         appendDigit(button.dataset.value);
         playKeyTone();
@@ -158,6 +248,7 @@ buttons.addEventListener('click', event => {
 });
 
 document.addEventListener('keydown', event => {
+    startMusic();
     const key = event.key;
     if (/^[0-9]$/.test(key)) {
         appendDigit(key);
@@ -269,9 +360,14 @@ function addHistoryEntry(entry) {
 
 themeNextBtn?.addEventListener('click', () => { nextTheme(); playMiau(); });
 themePrevBtn?.addEventListener('click', () => { prevTheme(); playMiau(); });
- historyToggleBtn?.addEventListener('click', () => { toggleHistory(); playMiau(); });
- historyCloseBtn?.addEventListener('click', () => { toggleHistory(); });
+historyToggleBtn?.addEventListener('click', () => { toggleHistory(); playMiau(); });
+historyCloseBtn?.addEventListener('click', () => { toggleHistory(); });
+musicToggle?.addEventListener('click', event => {
+    event.stopPropagation();
+    toggleMusic();
+});
 
 // initialize theme
 applyTheme(themeIndex);
+updateMusicButton();
 updateHistoryPanel();
