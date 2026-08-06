@@ -340,6 +340,10 @@ function getKaoEmoji() {
     return emojis[Math.floor(Math.random() * emojis.length)];
 }
 
+function isVeryHardQuestion(text) {
+    return /\b(duro|difícil|complicado|muy difícil|extremadamente|desafiante|nasa|universidad|teorema|integral|derivada|ecuación|algebra|logaritmo|sistema|matriz|polinomio|función|limite|probabilidad)\b/i.test(text);
+}
+
 function solveMathQuestion(text) {
     const trimmed = text.trim();
     const simpleSum = trimmed.match(/(-?\d+)\s*([+\-*/])\s*(-?\d+)/);
@@ -361,7 +365,11 @@ function solveMathQuestion(text) {
         return `La raíz cuadrada de ${value} es ${Math.sqrt(value).toFixed(2)}. Se resuelve con calma y paso a paso cuando hace falta. ${getKaoEmoji()}`;
     }
 
-    return `Puedo ayudarte a resolverlo con un enfoque claro y ordenado. Si me compartes los datos exactos, te explico la solución paso a paso. ${getKaoEmoji()}`;
+    if (isVeryHardQuestion(trimmed)) {
+        return `¿Trabajas en la NASA o por qué preguntas tan difíciles? Bueno, para eso estoy yo. ${getKaoEmoji()}`;
+    }
+
+    return `Puedo ayudarte a resolverlo con un enfoque claro y ordenado. Nada es imposible para esta ayuda matemática, y si me das los datos exactos, te explico la solución paso a paso. ${getKaoEmoji()}`;
 }
 
 function toggleAiPanel() {
@@ -384,6 +392,14 @@ function handleAiSubmit(event) {
 
     if (!isMathQuestion(userText)) {
         addAiMessage('no estoy disponible para responder eso! ve a Google! ૮ ˶ᵔ ᵕ ᵔ˶ ა');
+        return;
+    }
+
+    if (isVeryHardQuestion(userText)) {
+        addAiMessage('¿Trabajas en la NASA o por qué preguntas tan difíciles? Bueno, para eso estoy yo. ʘ‿ʘ');
+        setTimeout(() => {
+            addAiMessage(`Nada es imposible para esta ayuda matemática. Voy a resolverlo con calma y claridad. ${getKaoEmoji()}`);
+        }, 700);
         return;
     }
 
@@ -469,4 +485,4 @@ window.addEventListener('pointerdown', () => {
 applyTheme(themeIndex);
 updateMusicButton();
 updateHistoryPanel();
-addAiMessage('Hola, soy tu asistente rosita de matemáticas. Puedo ayudarte con ideas claras, pasos ordenados y respuestas tranquilas.');
+addAiMessage('Hola, soy una IA que te ayudará en matemáticas y estoy a tu servicio. ʘ‿ʘ\nPuedo ayudarte con ideas claras, pasos ordenados y respuestas tranquilas.');
